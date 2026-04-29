@@ -404,8 +404,16 @@
     // ========== API Helpers ==========
     function showToast(msg, type) {
         type = type || 'info';
-        var html = '<div class="toast align-items-center text-bg-' + type + ' border-0" role="alert">';
-        html += '<div class="d-flex"><div class="toast-body">' + msg + '</div>';
+        // 映射类型到 Bootstrap 类名
+        var bgClass = {
+            'success': 'text-bg-success',
+            'error': 'text-bg-danger',
+            'warning': 'text-bg-warning',
+            'info': 'text-bg-info'
+        }[type] || 'text-bg-info';
+        
+        var html = '<div class="toast align-items-center ' + bgClass + ' border-0" role="alert" style="box-shadow: 0 4px 20px rgba(0,0,0,0.4);">';
+        html += '<div class="d-flex"><div class="toast-body font-medium">' + msg + '</div>';
         html += '<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>';
 
         var $el = $(html).appendTo('#toastContainer');
