@@ -1,0 +1,14 @@
+llama-index
+openai
+faiss-cpu
+flask
+pypdf2
+python-docx
+markdown
+chardet
+bootstrap-flask
+llama-index-llms-ollama
+llama-index-embeddings-huggingface
+transformers
+sentence-transformers
+python-dotenv

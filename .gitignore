@@ -1,0 +1,59 @@
+# ============================================
+# LlamaIndex RAG 应用 - Git 忽略配置
+# ============================================
+
+# Python 编译文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# 虚拟环境
+venv/
+.venv/
+env/
+.env/
+
+# 环境变量文件（包含敏感信息）
+.env
+.env.local
+.env.*.local
+
+# 上传文件目录
+static/uploads/
+!static/uploads/README.md
+
+# 向量存储目录
+vector_store/
+
+# 日志文件
+*.log
+app.log
+
+# 编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 缓存和临时文件
+.cache/
+.temp/
+*.egg-info/
+.eggs/
+
+# 测试报告
+htmlcov/
+.pytest_cache/
+.coverage
+coverage.xml
+
+# Docker
+docker-compose.override.yml
