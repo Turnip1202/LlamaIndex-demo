@@ -1,6 +1,6 @@
 # 路由文件 - RESTful API 后端
 
-from flask import render_template, request, redirect, url_for, flash, jsonify, send_from_directory
+from flask import render_template, request, redirect, url_for, flash, jsonify, send_from_directory, Response
 from app import app
 import os
 import time
@@ -268,6 +268,44 @@ def api_chat():
         return api_response(-1, f'参数错误: {str(e)}')
     except Exception as e:
         logger.error(f"查询时发生未知错误: {str(e)}")
+        return api_response(-1, f'查询出错: {str(e)}')
+
+
+@app.route('/api/chat/stream', methods=['POST'])
+def api_chat_stream():
+    """智能问答（流式输出）"""
+    try:
+        # 检查请求内容类型
+        if not request.is_json:
+            return api_response(-1, '请求格式错误，需要 JSON 格式')
+        
+        data = request.get_json()
+        if data is None:
+            return api_response(-1, '请求体为空')
+        
+        # 验证问题参数是否存在
+        if 'question' not in data:
+            return api_response(-1, '缺少 question 参数')
+        
+        question = data.get('question', '').strip()
+
+        # 验证问题非空
+        if not question:
+            return api_response(-1, '问题不能为空')
+        
+        # 验证问题长度
+        if len(question) > MAX_QUESTION_LENGTH:
+            return api_response(-1, f'问题长度超过限制（最大 {MAX_QUESTION_LENGTH} 字符）')
+
+        # 流式响应生成器
+        def generate():
+            for token in container.get_query_engine().query_stream(question):
+                # 使用 SSE (Server-Sent Events) 格式
+                yield f"data: {token}\n\n"
+        
+        return Response(generate(), content_type='text/event-stream')
+    except Exception as e:
+        logger.error(f"流式查询时发生错误: {str(e)}")
         return api_response(-1, f'查询出错: {str(e)}')
 
 
